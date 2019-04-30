@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Guesser.hpp"
+#include "calculate.hpp"
 using namespace std;
 
 class SmartGuesser: public bullpgia::Guesser{
