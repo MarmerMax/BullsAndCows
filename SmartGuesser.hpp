@@ -13,6 +13,6 @@ class SmartGuesser: public bullpgia::Guesser{
         delete[] bull_arr;
         delete[] pgia_arr;
     };
-    virtual string guess() override;
-    virtual void startNewGame(uint length) override;
+    string guess() override;
+    void startNewGame(uint length) override;
 };
