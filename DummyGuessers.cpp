@@ -1,7 +1,7 @@
 #include "DummyGuessers.hpp"
 #include <stdlib.h>
 #include <string>
-#include <stdexcept>
+// #include <stdexcept>
 using namespace std;
 using namespace bullpgia;
 
@@ -14,6 +14,9 @@ string RandomGuesser::guess() {
 	return r;
 }
 
+
+/*
+//implement in guesseer.cpp
 void bullpgia::Guesser::learn(string reply){
 	int index_of_comma = 0;
 	//find index of comma
@@ -41,3 +44,4 @@ void bullpgia::Guesser::startNewGame(uint length){
 	this->pgia = 0;
 	this->bull = 0; 
 }
+*/
