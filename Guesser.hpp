@@ -9,7 +9,7 @@ namespace bullpgia{
         int bull = 0;
         int pgia = 0;
         virtual string guess() = 0;
-        virtual void startNewGame(uint length);
-        void learn(string reply);
+        virtual void startNewGame(uint length)=0;
+        virtual void learn(string reply)=0;
     };
 }
