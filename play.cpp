@@ -9,6 +9,7 @@
 #include "Guesser.hpp"
 #include "Chooser.hpp"
 #include <string>
+#include <iostream>
 using namespace std;
 
 namespace bullpgia {
@@ -16,7 +17,8 @@ namespace bullpgia {
 		const uint TECHNICAL_VICTORY_TO_GUESSER = 0;
 		const uint TECHNICAL_VICTORY_TO_CHOOSER = maxTurns+1;
 
-		string choice = chooser.choose(length);		
+		string choice = chooser.choose(length);
+		cout << "cohice = " << choice << endl;	
 		if (choice.length()!=length)       // Illegal choice
 			return TECHNICAL_VICTORY_TO_GUESSER;
 
@@ -24,9 +26,11 @@ namespace bullpgia {
 		uint indexOfTurn;
 		for (indexOfTurn=0; indexOfTurn<maxTurns; ++indexOfTurn) {
 			string guess = guesser.guess();
+			cout << "guess = " << guess << endl;	
 			if (guess.length()!=length)  // Illegal guess
 				return TECHNICAL_VICTORY_TO_CHOOSER;
 			if (guess==choice) {
+				cout << "turns = " << indexOfTurn + 1 << endl;
 				return indexOfTurn + 1; 
 			} else {
 				auto reply = calculateBullAndPgia(choice, guess);

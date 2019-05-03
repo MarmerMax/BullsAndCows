@@ -10,11 +10,9 @@ namespace bullpgia{
         int bull = 0;
         int pgia = 0;
         virtual string guess() = 0;
-        //virtual void startNewGame(uint length);
-        //void learn(string reply);
 
 
-        void learn(string reply){
+        virtual void learn(string reply){
             int index_of_comma = 0;
             //find index of comma
             while(reply.at(index_of_comma) != ','){

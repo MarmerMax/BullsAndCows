@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "Guesser.hpp"
 #include "calculate.hpp"
 using namespace std;
@@ -15,5 +16,4 @@ class SmartGuesser: public bullpgia::Guesser{
         delete[] pgia_arr;
     };
     string guess() override;
-    void startNewGame(uint length) override;
 };

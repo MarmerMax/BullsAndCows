@@ -30,7 +30,7 @@ int main() {
 
 	SmartGuesser smarty;
 	for (uint i = 0; i < 100; ++i) {
-		cout << play(randy, smarty, 4, 100) << endl;  // smarty should always win in at most 10 turns!
+		cout << play(randy, smarty, 4, 100) << endl;  // smarty should always win in at most 100 turns!
 	}
 	return 0;
 }
