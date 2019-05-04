@@ -18,7 +18,7 @@ namespace bullpgia {
 		const uint TECHNICAL_VICTORY_TO_CHOOSER = maxTurns+1;
 
 		string choice = chooser.choose(length);
-		cout << "cohice = " << choice << endl;	
+		cout << "choose = " << choice << endl;	
 		if (choice.length()!=length)       // Illegal choice
 			return TECHNICAL_VICTORY_TO_GUESSER;
 

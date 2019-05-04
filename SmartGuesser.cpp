@@ -1,128 +1,136 @@
-#include <string>
 #include "SmartGuesser.hpp"
 #include <string>
 #include <cmath>
 #include <iostream>
 using namespace std;
 
-string RemainsOfZero(int,string);
-string concat_n_times(string,int);
-string concat_arr_elements(int[],int);
+//this function return simple string like '000', '1111', '3333'
+//argumnents: length of string, digit of this string
+string createSimpleGuess(uint size, char a); 
 
-
-int firstIn = 0;
-int i = 0;
-int j = 0;
-int l = 0;
-int countbull = 0;
-int bull_in_arr;
-string firstguess = "";
-int nextguess = 0;
-
+//generate final answer
+string generateAnswer(int * arr, int size);
 
 string SmartGuesser::guess(){
-    firstIn++;
-    if(firstIn == 1){
-        bull_arr = new int[this->length];
-        return firstguess = concat_n_times("1",this->length);
+    if(this->count_try == 0){//if first try return '0' * length
+        this->count_try++;
+        return createSimpleGuess(this->length, '0');
     }
-    else if(this->length < 10){
-        for(; i<this->length ; i++){
-            while(j<10 && l<10){
-                // cout << "i=" << i << ",j=" << j << ",l=" << l << endl;
-                if(this->bull > 0){
-                    string str = concat_n_times(to_string(l),i) + to_string(j) + concat_n_times(to_string(l),length-i-1);
-                    countbull++;
-                    l++;
-                    if(countbull==10 && l==10){
-                        bull_arr[i] = j;
-                        bull_in_arr++;
-                        if(bull_in_arr == this->length){
-                            return concat_arr_elements(bull_arr,this->length);
-                        }
-                        // cout << bull_arr[0] << " " << bull_arr[1] << " " << bull_arr[2] << " " << endl;
-                        countbull=0;
-                    }
-                    if(l==10 && j<10){
-                        j++;
-                        l=0;
-                    }
-                    return str;
-                }
-                if(this->bull == 0){
-                    countbull=0;
-                    l = 0;
-                    j++;
-                    if(j==10){
-                        j=0;
-                        break;
-                    }
-                    string str = concat_n_times(to_string(l),i) + to_string(j) + concat_n_times(to_string(l),length-i-1);
-                    return str;
+    else{
+        checkPgiot(); //check pgiot of learn function to usedNums array
+        if(this->already_finded < this->length){ //if already we didn't find all used numbers
+            if(this->count_try >= 1 && this->count_try <= 9){ //only if we between 1-9 steps
+                this->count_try++; //try ++
+                switch (this->count_try - 1){
+                    case 1: return createSimpleGuess(this->length, '1');
+                    case 2: return createSimpleGuess(this->length, '2');;
+                    case 3: return createSimpleGuess(this->length, '3');;
+                    case 4: return createSimpleGuess(this->length, '4');;
+                    case 5: return createSimpleGuess(this->length, '5');;
+                    case 6: return createSimpleGuess(this->length, '6');;
+                    case 7: return createSimpleGuess(this->length, '7');;
+                    case 8: return createSimpleGuess(this->length, '8');;
+                    case 9: return createSimpleGuess(this->length, '9');;
                 }
             }
+        }
+        else{
+            if(this->current_index < this->length){ //if index not equal to length so try again
+                return createSmartGuess();          
+            }
+            else{
+                return generateAnswer(this->answerArray, this->length);
+            }
+        }
+    }
+}
+
+void SmartGuesser::startNewGame(uint length){
+    // delete[] answerArray;
+    this->length = length;
+    this->pgia = 0;
+    this->bull = 0;
+    this->answerArray = new int(length); 
+    this->count_try = 0;
+    this->current_index= 0;
+    this->last_try_index = -1;
+    this->already_finded = 0;
+    for(int i = 0; i < length; i++){
+        answerArray[i] = 0;
+    }
+    for(int i = 0; i < 10; i++){
+        usedNums[i] = 0;
+    }
+}
+
+string SmartGuesser::createSmartGuess(){
+    //create string from used number
+    string temp = "";
+    char ch = '*';
+    for(int i = 0; i < this->current_index; i++){ //start to fill string by not used number
+        temp += ch;
+    }
+    for(int i = 0; i < 10; i++){ //add used number to string
+        if(usedNums[i] > 0 && i > this->last_try_index){
+            temp += to_string(i);     //add this number to string
+            this->last_try_index = i; //init last tried index
+            break;
+        }
+    }
+    for(int i = 0; i < this->length - this->current_index - 1; i++){ //fill untill end string by not used number
+        temp += ch;
+    }
+    return temp;
+}
+
+void SmartGuesser::checkPgiot(){//check last guess
+    if(this->already_finded < this->length){ //because '0000', 1111', '2222' ...                     
+        int count = this->bull + this->pgia;
+        if(count > 0){
+            this->usedNums[count_try - 1] += count; //add in usesNum array appears of this number
+            this->already_finded += count; //add to sum of all finded numbers
         }
     }
     else{
-        for(; i<pow(10,this->length) ; i++){
-            nextguess++;
-            string s_nextguess = to_string(nextguess);
-            int diffLen = this->length - s_nextguess.length();
-            if(diffLen == 0){
-                return s_nextguess;
-            }
-            else if(diffLen > 0){
-                s_nextguess= RemainsOfZero(diffLen,s_nextguess);
-                return s_nextguess;
-            }
+        int count = this->bull;
+        if(count > 0){
+            //put in answer array in current index the last try index 
+            this->answerArray[this->current_index] = this->last_try_index;
+
+            //-- count of used number on array of usedNum
+            this->usedNums[this->last_try_index]--; 
+
+            this->last_try_index = -1; //start from -1
+            this->current_index++; //go to next index
         }
     }
-    return "";
 }
-// string SmartGuesser::guess(){
-//     for(; i<this->length*100 ; i++){
-//         nextguess++;
-//         string s_nextguess = to_string(nextguess);
-//         int diffLen = this->length - s_nextguess.length();
-//         if(diffLen == 0){
-//             return s_nextguess;
-//         }
-//         else if(diffLen > 0){
-//             s_nextguess= RemainsOfZero(diffLen,s_nextguess);
-//             return s_nextguess;
-//         }
-//     }
-// 	return "";
-// }
 
-
-string RemainsOfZero(int amount, string str){
-    for(int k=0 ; k<amount ; k++){
-        str = "0"+str;
+//this function return simple string like '000', '1111', '3333'
+//argumnents: length of string, digit of this string
+string createSimpleGuess(uint size, char a){ 
+    string temp = "";
+    for(int i = 0; i < size; i++){
+        temp += a;
     }
-    return str;
+    return temp;
 }
 
-string concat_n_times(string str,int n){
-    string ans = "";
-    for(int t=0 ; t<n ; t++){
-        ans += str;
+string generateAnswer(int * arr, int size){ //
+    string temp = "";
+    for(int i = 0; i < size; i++){
+        temp += to_string(arr[i]);
     }
-    return ans;
+    return temp;
 }
 
-string concat_arr_elements(int* arr, int len){
-    string ans = "";
-    for(int x=0 ; x<len ; x++){
-        ans += to_string(arr[x]);
+char findNotUsedNumber(int * arr, int size){ // this number is not exist in choose number
+    for(int i = 1; i < size; i++){ //start from 1 for exactly change him
+        if(arr[i] == 0){
+            return i;
+        }
     }
-    return ans;
-}
-string parseIntegerToString(int num){
-    return to_string(num);
+    return '*';
 }
 
-int parseStringToInteger(string str){
-    int ans = atoi(str.c_str());
-    return ans;
-}
+

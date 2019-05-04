@@ -28,7 +28,7 @@ int main() {
 		ConstantChooser c1234{"1234"}, c12345{"12345"}, c9999{"9999"};
 		ConstantGuesser g1234{"1234"}, g12345{"12345"}, g9999{"9999"};
 
-/*
+
 		testcase.setname("Check Constant Choosers right creation")
 		.CHECK_OUTPUT(c1234.choose(4), "1234")												//"1234", "1234"
 		.CHECK_OUTPUT(c12345.choose(5), "12345")											//"12345", "12345"
@@ -104,21 +104,40 @@ int main() {
 		.CHECK_EQUAL(g9999.pgia, 0)																		 //0, 0
 		;
 
-		testcase.setname("Play with dummy choosers and guessers")
-		.CHECK_EQUAL(play(c1234, g1234, 4, 100), 1)      // guesser wins in one turn
-		.CHECK_EQUAL(play(c1234, g9999, 4, 100), 101)    // guesser loses by running out of turns 
-		.CHECK_EQUAL(play(c1234, g12345, 4, 100), 101)   // guesser loses technically by making an illegal guess (too long)
-		.CHECK_EQUAL(play(c12345, g1234, 4, 0), 0)     // chooser loses technically by choosing an illegal number (too long)
-		.CHECK_EQUAL(play(c12345, g12345, 5, 100), 1)    // guesser wins in one turn
-		.CHECK_EQUAL(play(c9999, g9999, 4, 100), 1)      // guesser wins in one turn
-		;
-*/
+		// testcase.setname("Play with dummy choosers and guessers")
+		// .CHECK_EQUAL(play(c1234, g1234, 4, 100), 1)      // guesser wins in one turn
+		// .CHECK_EQUAL(play(c1234, g9999, 4, 100), 101)    // guesser loses by running out of turns 
+		// .CHECK_EQUAL(play(c1234, g12345, 4, 100), 101)   // guesser loses technically by making an illegal guess (too long)
+		// .CHECK_EQUAL(play(c12345, g1234, 4, 0), 0)     // chooser loses technically by choosing an illegal number (too long)
+		// .CHECK_EQUAL(play(c12345, g12345, 5, 100), 1)    // guesser wins in one turn
+		// .CHECK_EQUAL(play(c9999, g9999, 4, 100), 1)      // guesser wins in one turn
+		// ;
+
 		testcase.setname("Play with smart guesser");
-		// RandomChooser randy;
-		ConstantChooser randy{"0123"};
+		RandomChooser randy;
+		// ConstantChooser randy{"9876543210"};
+		// ConstantChooser randy{"6563"};
 		SmartGuesser smarty;
 		for (uint i=0; i<1; ++i) {
+			testcase.CHECK_EQUAL(play(randy, smarty, 1, 100)<=100, true);  // smarty should always win in at most 10 turns!
+		}
+		for (uint i=0; i<1; ++i) {
+			testcase.CHECK_EQUAL(play(randy, smarty, 2, 100)<=100, true);  // smarty should always win in at most 10 turns!
+		}
+		for (uint i=0; i<1; ++i) {
+			testcase.CHECK_EQUAL(play(randy, smarty, 3, 100)<=100, true);  // smarty should always win in at most 10 turns!
+		}
+		for (uint i=0; i<1; ++i) {
 			testcase.CHECK_EQUAL(play(randy, smarty, 4, 100)<=100, true);  // smarty should always win in at most 10 turns!
+		}
+		for (uint i=0; i<1; ++i) {
+			testcase.CHECK_EQUAL(play(randy, smarty, 5, 100)<=100, true);  // smarty should always win in at most 10 turns!
+		}
+		for (uint i=0; i<1; ++i) {
+			testcase.CHECK_EQUAL(play(randy, smarty, 6, 100)<=100, true);  // smarty should always win in at most 10 turns!
+		}
+		for (uint i=0; i<1; ++i) {
+			testcase.CHECK_EQUAL(play(randy, smarty, 10, 100)<=100, true);  // smarty should always win in at most 10 turns!
 		}
 
     grade = testcase.grade();
